@@ -40,7 +40,9 @@ app.get('/api/Customers', (req, res) => {
 
 connection.query(
 
-'SELECT * FROM CUSTOMER',
+    'SELECT * FROM CUSTOMER WHERE isDeleted = 0', //고객 데이터를 불러올때는 삭제되지 않은 데이터만 가져와야함
+
+   
 
 (err, rows, fields) => {
 
@@ -59,7 +61,7 @@ app.use('/image', express.static('./upload'));
 //multer가 자동으로 이름 겹치지 않게 할당해 줌.
 app.post('/api/Customers', upload.single('image'), (req, res) => {
 
-    let sql = 'INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)';
+    let sql = 'INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?,now(),0)';
     
     let image = '/image/' + req.file.filename;
     
@@ -86,6 +88,16 @@ app.post('/api/Customers', upload.single('image'), (req, res) => {
     });
     
     
+    app.delete('/api/customers/:id', (req, res) => {
+        let sql = 'UPDATE CUSTOMER SET isDeleted = 1 WHERE id = ?'; //쿼리로 데이터 날림
+        let params = [req.params.id]; //실제 데이터 선택 
+        connection.query(sql, params,
+        (err, rows, fields) => {
+        res.send(rows);
+        }
+        )
+        });
+        
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
