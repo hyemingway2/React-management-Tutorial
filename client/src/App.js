@@ -107,13 +107,13 @@ class App extends Component {
     }
   }
 
-  stateRefresh = () => {
+  stateRefresh = () => {//초기화 해주는 것. 바뀐 부분만 리프레쉬 해줌
     this.setState({
       Customerss: '',
       completed: 0,
       searchKeyword: ''
     });
-    this.callApi()
+    this.callApi() //고객 데이터 불러오는 것은 그대로
       .then(res => this.setState({Customers: res}))
       .catch(err => console.log(err));
   }
@@ -181,8 +181,10 @@ class App extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        <div className={classes.menu}>
-          <CustomerAdd stateRefresh={this.stateRefresh}/>
+        <div className={classes.menu}> 
+        {/* 함수 자체를 props로 보내주는 것. */}
+          <CustomerAdd stateRefresh={this.stateRefresh}/> 
+          
         </div>
         <Paper className={classes.paper}>
           <Table className={classes.table}>
