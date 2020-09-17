@@ -98,13 +98,17 @@ const styles = theme => ({
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor(props) { //생성자
+    super(props); 
     this.state = {
       Customers: '',
       completed: 0,
-      searchKeyword: ''
+      searchKeyword: '' //검색창에 아무것도 입력안해도 전체 데이터 출력되게 하는 함수
     }
+    this.stateRefresh = this.stateRefresh.bind(this);
+this.handleValueChange = this.handleValueChange.bind(this)
+
+
   }
 
   stateRefresh = () => {//초기화 해주는 것. 바뀐 부분만 리프레쉬 해줌
@@ -136,23 +140,23 @@ class App extends Component {
     this.setState({ completed: completed >= 100 ? 0 : completed + 1});
   }
 
-  handleValueChange = (e) => {
+  handleValueChange = (e) => { //검색창에 사용자가 입력한 문자열을 스테이트에 반영하기 위해 다음과 같은 값 변경 처리 함수 필요.
     let nextState = {};
     nextState[e.target.name] = e.target.value;
     this.setState(nextState);
   }
 
   render() {
-    const filteredComponents = (data) => {
+    const filteredComponents = (data) => { //어떤 데이터를 매개 변수로 받았을때 
       data = data.filter((c) => {
-        return c.name.indexOf(this.state.searchKeyword) > -1;
+        return c.name.indexOf(this.state.searchKeyword) > -1; //SearchKeyword가 포함되어 있는지
       });
       return data.map((c) => {
-        return <Customer stateRefresh={this.stateRefresh} key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} /> 
+        return <Customer stateRefresh={this.stateRefresh} key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} /> //필터를 거친 뒤에 출력
       });
     }
     const { classes } = this.props;
-    const cellList = ["번호", "프로필 이미지", "이름", "생년월일", "성별", "직업", "설정"];
+    const cellList = ["번호", "프로필 이미지", "이름", "생년월일", "성별", "직업", "설정"]; //실제로 사용자가 검색창에 입력한 정보만 출력할 수 잇게
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -176,7 +180,7 @@ class App extends Component {
                 }}
                 name="searchKeyword"
                 value={this.state.searchKeyword}
-                onChange={this.handleValueChange}
+                onChange={this.handleValueChange}//실제로 값이 변경되면 handlevalueChange 값을 가져옴
               />
             </div>
           </Toolbar>
