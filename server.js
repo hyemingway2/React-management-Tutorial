@@ -31,6 +31,9 @@ database: conf.database
 
 connection.connect();
 
+const multer = require('multer'); 
+const upload = multer({dest: './upload'}) //사용자의 파일이 업로드가 되는 공간 설정
+
 
 
 app.get('/api/Customers', (req, res) => {
@@ -50,6 +53,39 @@ res.send(rows);
 });
 
 
+app.use('/image', express.static('./upload'));
+
+ //업로드라는 이름의 폴더를 사용자가 직접 접근해서 확인할 수 있게 express.static으로 공유하게 해줌 사용자의 입장에서는 이미지로 업로드 하는데 우리 서버에서는 업로드로
+//multer가 자동으로 이름 겹치지 않게 할당해 줌.
+app.post('/api/Customers', upload.single('image'), (req, res) => {
+
+    let sql = 'INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)';
+    
+    let image = '/image/' + req.file.filename;
+    
+    let name = req.body.name;
+    
+    let birthday = req.body.birthday;
+    
+    let gender = req.body.gender;
+    
+    let job = req.body.job;
+    
+    let params = [image, name, birthday, gender, job];
+    
+    connection.query(sql, params,
+    
+    (err, rows, fields) => {
+    
+    res.send(rows);
+    
+    }
+    
+    )
+    
+    });
+    
+    
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
