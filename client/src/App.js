@@ -24,27 +24,27 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
 
-root: {
+  root: {
 
-width: "100%",
+    width: "100%",
 
-marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3,
 
-overflowX: "auto"
+    overflowX: "auto"
 
-},
+  },
 
-table: {
+  table: {
 
-minWidth: 1080
+    minWidth: 1080
 
-},
+  },
 
-progress: {
+  progress: {
 
-margin: theme.spacing.unit * 2
+    margin: theme.spacing.unit * 2
 
-}
+  }
 
 });
 
@@ -52,121 +52,121 @@ margin: theme.spacing.unit * 2
 
 class App extends Component {
 
-state = {
+  state = {
 
-customers: '',
+    customers: '',
 
-completed: 0
+    completed: 0
 
-}
-
-
-
-componentDidMount() {
-
-this.timer = setInterval(this.progress, 20);
-
-this.callApi()
-
-.then(res => this.setState({customers: res}))
-
-.catch(err => console.log(err));
-
-}
+  }
 
 
 
-componentWillUnmount() {
+  componentDidMount() {
 
-clearInterval(this.timer);
+    this.timer = setInterval(this.progress, 20);
 
-}
+    this.callApi()
 
+      .then(res => this.setState({ customers: res }))
 
+      .catch(err => console.log(err));
 
-callApi = async () => {
-
-const response = await fetch('/api/customers');
-
-const body = await response.json();
-
-return body;
-
-}
+  }
 
 
 
-progress = () => {
+  componentWillUnmount() {
 
-const { completed } = this.state;
+    clearInterval(this.timer);
 
-this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
-
-};
+  }
 
 
 
-render() {
+  callApi = async () => {
 
-const { classes } = this.props;
+    const response = await fetch('/api/Customers');
 
-return (
+    const body = await response.json();
 
-<Paper className={classes.root}>
+    return body;
 
-<Table className={classes.table}>
+  }
 
-<TableHead>
 
-<TableRow>
 
-<TableCell>번호</TableCell>
+  progress = () => {
 
-<TableCell>이미지</TableCell>
+    const { completed } = this.state;
 
-<TableCell>이름</TableCell>
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
 
-<TableCell>생년월일</TableCell>
+  };
 
-<TableCell>성별</TableCell>
 
-<TableCell>직업</TableCell>
 
-</TableRow>
+  render() {
 
-</TableHead>
+    const { classes } = this.props;
 
-<TableBody>
+    return (
 
-{this.state.customers ?
+      <Paper className={classes.root}>
 
-this.state.customers.map(c => {
+        <Table className={classes.table}>
 
-return <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />
+          <TableHead>
 
-}) :
+            <TableRow>
 
-<TableRow>
+              <TableCell>번호</TableCell>
 
-<TableCell colSpan="6" align="center">
+              <TableCell>이미지</TableCell>
 
-<CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} />
+              <TableCell>이름</TableCell>
 
-</TableCell>
+              <TableCell>생년월일</TableCell>
 
-</TableRow>
+              <TableCell>성별</TableCell>
 
-}
+              <TableCell>직업</TableCell>
 
-</TableBody>
+            </TableRow>
 
-</Table>
+          </TableHead>
 
-</Paper>
+          <TableBody>
 
-);
+            {this.state.customers ?
 
-}
+              this.state.customers.map(c => {
+
+                return <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job} />
+
+              }) :
+
+              <TableRow>
+
+                <TableCell colSpan="6" align="center">
+
+                  <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} />
+
+                </TableCell>
+
+              </TableRow>
+
+            }
+
+          </TableBody>
+
+        </Table>
+
+      </Paper>
+
+    );
+
+  }
 
 }
 
