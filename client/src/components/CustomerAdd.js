@@ -1,13 +1,15 @@
 import React from 'react';
 import { post } from 'axios';
-import Dialog from '@material-ui/core/Dialog';
+import Dialog from '@material-ui/core/Dialog'; //html을 모달창에서 출력될 수 있게 해주는 것 다이얼로그
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import TextField from '@material-ui/core/TextField';
+import DialogTitle from '@material-ui/core/DialogTitle';//다이얼로그는 타이틀 영역도 따로 존재
+import DialogContent from '@material-ui/core/DialogContent';//입력창들이 들어가는 라이브러리
+import TextField from '@material-ui/core/TextField';//material-ui를 따르는 텍스트 필드
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';//스타일스 라이브러리
 
+
+//테마를 정해줌
 const styles = theme => ({
     hidden: {
         display: 'none'
@@ -43,7 +45,7 @@ class CustomerAdd extends React.Component {
             gender: '',
             job: '',
             fileName: '',
-            open: false
+            open: false //팝업창이 화면에 나타나지 않도록
         })
     }
 
@@ -98,9 +100,11 @@ class CustomerAdd extends React.Component {
         const { classes } = this.props;
         return (
             <div>
+                {/* 팝업창 띄울수 있게 */}
                 <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
                     고객 추가하기
                 </Button>
+                {/* 팝업창 닫기 */}
                 <Dialog open={this.state.open} onClose={this.handleClose}>
                     <DialogTitle>고객 추가</DialogTitle>
                     <DialogContent>
